@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MyPOS — Sabé qué tenés, qué falta y qué reponer</title>
+  <meta name="description" content="MyPOS es el sistema de stock y punto de venta para tu negocio. Cargás una vez y sabés qué tenés, qué falta y cuánto vendés. Sin cuadernos, sin Excel, sin adivinar." />
+
+  <!-- Tailwind (Play CDN: cero build, ideal para arrancar) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink:   '#080c0a',   // fondo página
+            panel: '#0c1310',   // secciones alternas
+            card:  '#111b16',   // tarjetas
+            line:  '#1e2b24',   // bordes
+            brand: { DEFAULT: '#2ee6a0', 400: '#5aecb6', 600: '#1bc687' },
+          },
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { background: #080c0a; }
+    .glow { background: radial-gradient(60% 60% at 50% 0%, rgba(46,230,160,.18) 0%, rgba(46,230,160,0) 70%); }
+    input[type=range]{ -webkit-appearance:none; appearance:none; height:6px; border-radius:9999px; background:#22332b; outline:none; }
+    input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; appearance:none; width:18px; height:18px; border-radius:9999px; background:#2ee6a0; cursor:pointer; box-shadow:0 0 0 4px rgba(46,230,160,.2); }
+    input[type=range]::-moz-range-thumb{ width:18px; height:18px; border:0; border-radius:9999px; background:#2ee6a0; cursor:pointer; }
+  </style>
+</head>
+
+<body class="bg-ink text-white font-sans antialiased selection:bg-brand/30">
+
+  <!-- ===== NAV ===== -->
+  <header class="sticky top-0 z-50 border-b border-line/70 bg-ink/80 backdrop-blur">
+    <div class="mx-auto max-w-6xl px-5 h-16 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2">
+        <span class="h-8 w-8 rounded-lg bg-brand grid place-items-center text-ink font-black">P</span>
+        <span class="font-bold text-lg">MyPOS</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-8 text-sm text-white/70">
+        <a href="#producto" class="hover:text-white transition">Producto</a>
+        <a href="#calculadora" class="hover:text-white transition">Calculadora</a>
+        <a href="#precios" class="hover:text-white transition">Precios</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <a href="https://my-pos-front-completo-nu.vercel.app/login" target="_blank" rel="noreferrer" class="hidden sm:inline text-sm text-white/70 hover:text-white transition">Iniciar sesión</a>
+        <a href="#precios" data-msg="¡Hola! Quiero probar MyPOS gratis 7 días 🙌" class="wa text-sm font-semibold bg-brand text-ink rounded-lg px-4 py-2 hover:bg-brand-400 transition">Probar gratis</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 glow pointer-events-none"></div>
+    <div class="relative mx-auto max-w-6xl px-5 pt-20 pb-10 text-center">
+      <span class="inline-flex items-center gap-2 rounded-full border border-line bg-card/60 px-3 py-1 text-xs text-brand-400">
+        <span class="h-1.5 w-1.5 rounded-full bg-brand animate-pulse"></span>
+        Gestión de stock en tiempo real
+      </span>
+
+      <h1 class="mt-6 text-4xl sm:text-6xl font-extrabold tracking-tight leading-[1.05]">
+        Sabé qué tenés,<br>qué falta y <span class="text-brand">qué reponer.</span>
+      </h1>
+
+      <p class="mx-auto mt-5 max-w-xl text-white/60 text-base sm:text-lg">
+        MyPOS es el sistema de stock y punto de venta para tu negocio. Cargás una vez
+        y sabés qué mover, qué falta y cuánto vendés en cada entrada de proveedor.
+        Sin cuadernos, sin Excel, sin adivinar.
+      </p>
+
+      <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+        <a href="#precios" data-msg="¡Hola! Quiero probar MyPOS gratis 7 días 🙌" class="wa w-full sm:w-auto bg-brand text-ink font-semibold rounded-xl px-6 py-3 hover:bg-brand-400 transition">Probar gratis 7 días</a>
+        <a href="#producto" class="w-full sm:w-auto border border-line rounded-xl px-6 py-3 text-white/80 hover:bg-card transition">Ver cómo funciona</a>
+      </div>
+      <p class="mt-4 text-xs text-white/40">Sin tarjeta · Sin instalación · Configurado en un rato</p>
+
+      <!-- Mockup dashboard -->
+      <div class="mt-12 mx-auto max-w-4xl rounded-2xl border border-line bg-card/70 p-2 shadow-2xl shadow-black/50">
+        <div class="rounded-xl border border-line bg-ink/60 overflow-hidden grid grid-cols-12 text-left">
+          <!-- sidebar -->
+          <aside class="hidden sm:flex col-span-3 flex-col gap-1 border-r border-line p-3 text-xs">
+            <div class="flex items-center gap-2 px-2 py-2 font-semibold"><span class="h-5 w-5 rounded bg-brand grid place-items-center text-ink text-[10px] font-black">P</span> MyPOS</div>
+            <div class="mt-2 space-y-1 text-white/50">
+              <div class="px-2 py-1.5 rounded">Panel del día</div>
+              <div class="px-2 py-1.5 rounded">Punto de venta</div>
+              <div class="px-2 py-1.5 rounded">Productos</div>
+              <div class="px-2 py-1.5 rounded bg-brand/15 text-brand-400">Movimientos</div>
+              <div class="px-2 py-1.5 rounded">Proveedores</div>
+            </div>
+            <div class="mt-3 rounded-lg border border-amber-500/30 bg-amber-500/10 px-2 py-2 text-[11px] text-amber-300/90">Stock bajo · 4 productos</div>
+          </aside>
+          <!-- panel -->
+          <div class="col-span-12 sm:col-span-9 p-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <div class="text-sm font-semibold">Movimientos de stock</div>
+                <div class="text-[11px] text-white/40">Entradas y salidas de mercadería</div>
+              </div>
+            </div>
+            <div class="mt-4 grid grid-cols-3 gap-3">
+              <div class="rounded-lg bg-card p-3"><div class="text-lg font-bold">$184.290</div><div class="text-[11px] text-brand-400">▲ Entrada mes</div></div>
+              <div class="rounded-lg bg-card p-3"><div class="text-lg font-bold">3.482</div><div class="text-[11px] text-white/40">Unidades movidas</div></div>
+              <div class="rounded-lg bg-card p-3"><div class="text-lg font-bold">47</div><div class="text-[11px] text-white/40">Mov. registrados</div></div>
+            </div>
+            <div class="mt-4 space-y-1.5 text-xs">
+              <div class="text-[11px] text-white/40 uppercase tracking-wider">Historial de movimientos</div>
+              <div class="flex items-center justify-between rounded-md bg-card/60 px-3 py-2"><span>Aceite girasol 900ml</span><span class="text-brand-400">+120</span><span class="text-white/40">Ingreso</span></div>
+              <div class="flex items-center justify-between rounded-md bg-card/60 px-3 py-2"><span>Yerba mate 1kg</span><span class="text-brand-400">+80</span><span class="text-white/40">Compra proveedor</span></div>
+              <div class="flex items-center justify-between rounded-md bg-card/60 px-3 py-2"><span>Coca-Cola 500ml</span><span class="text-red-400">−48</span><span class="text-white/40">Venta</span></div>
+              <div class="flex items-center justify-between rounded-md bg-card/60 px-3 py-2"><span>Detergente 750ml</span><span class="text-brand-400">+30</span><span class="text-white/40">Ajuste inventario</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STATS ===== -->
+  <section class="border-y border-line bg-panel">
+    <div class="mx-auto max-w-6xl px-5 py-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      <div><div class="text-2xl font-extrabold text-brand">Stock</div><div class="mt-1 text-xs text-white/50">Al día y con avisos de reposición</div></div>
+      <div><div class="text-2xl font-extrabold text-brand">Ventas</div><div class="mt-1 text-xs text-white/50">Cobro rápido con lector de código</div></div>
+      <div><div class="text-2xl font-extrabold text-brand">Fiado</div><div class="mt-1 text-xs text-white/50">Cuentas corrientes sin cuaderno</div></div>
+      <div><div class="text-2xl font-extrabold text-brand">Caja</div><div class="mt-1 text-xs text-white/50">Cierre y números del día al instante</div></div>
+    </div>
+  </section>
+
+  <!-- ===== FEATURES ===== -->
+  <section id="producto" class="mx-auto max-w-6xl px-5 py-20">
+    <p class="text-xs text-brand-400 tracking-widest uppercase">El producto</p>
+    <h2 class="mt-3 text-3xl sm:text-4xl font-bold max-w-2xl leading-tight">
+      Todo lo que se te escapa del negocio, en una pantalla.
+    </h2>
+    <p class="mt-4 max-w-2xl text-white/60">Pensado con obsesión: cada detalle, ticket y depósito real. Ordenado por lo que te mueve la aguja de la caja.</p>
+
+    <div class="mt-10 grid md:grid-cols-2 gap-5">
+      <!-- grande izquierda -->
+      <div class="rounded-2xl border border-line bg-card p-6">
+        <div class="space-y-1.5 text-sm">
+          <div class="flex items-center justify-between rounded-md bg-ink/60 px-3 py-2"><span>Coca-Cola 500ml</span><span class="text-white/40">42 · 78 u.</span></div>
+          <div class="flex items-center justify-between rounded-md bg-ink/60 px-3 py-2"><span>Pan lactal</span><span class="text-amber-400">12 · 15 u. · reponer</span></div>
+          <div class="flex items-center justify-between rounded-md bg-ink/60 px-3 py-2"><span>Galletas X</span><span class="text-red-400">3 · 10 u. · crítico</span></div>
+          <div class="flex items-center justify-between rounded-md bg-ink/60 px-3 py-2"><span>Yerba Playadito 1kg</span><span class="text-white/40">21 · 40 u.</span></div>
+        </div>
+        <h3 class="mt-6 font-semibold">Stock que se actualiza solo</h3>
+        <p class="mt-1 text-sm text-white/55">Cada venta descuenta, cada entrada de proveedor suma. Tu tabla que reponer la tenés al toque, sin que se te escape.</p>
+      </div>
+      <!-- grande derecha -->
+      <div class="rounded-2xl border border-line bg-card p-6">
+        <div class="rounded-xl bg-ink/60 p-4 text-sm">
+          <div class="flex justify-between py-1"><span class="text-white/50">Coca-Cola 500ml</span><span>$1.200</span></div>
+          <div class="flex justify-between py-1"><span class="text-white/50">Yerba Playadito</span><span>$2.980</span></div>
+          <div class="flex justify-between py-1"><span class="text-white/50">Pan lactal</span><span>$1.640</span></div>
+          <div class="flex justify-between border-t border-line mt-2 pt-2 font-semibold"><span>TOTAL</span><span class="text-brand">$5.820</span></div>
+        </div>
+        <h3 class="mt-6 font-semibold">Vendé en segundos</h3>
+        <p class="mt-1 text-sm text-white/55">Lector de código de barras o buscador rápido: ticket, vuelto y medio de pago en cuestión de segundos.</p>
+      </div>
+    </div>
+
+    <div class="mt-5 grid md:grid-cols-3 gap-5">
+      <div class="rounded-2xl border border-line bg-card p-6">
+        <div class="flex items-end gap-1 h-16">
+          <div class="w-3 rounded-t bg-brand/40" style="height:40%"></div>
+          <div class="w-3 rounded-t bg-brand/60" style="height:65%"></div>
+          <div class="w-3 rounded-t bg-brand/40" style="height:50%"></div>
+          <div class="w-3 rounded-t bg-brand" style="height:90%"></div>
+          <div class="w-3 rounded-t bg-brand/60" style="height:70%"></div>
+          <div class="w-3 rounded-t bg-brand/40" style="height:55%"></div>
+        </div>
+        <h3 class="mt-5 font-semibold">Tus números en vivo</h3>
+        <p class="mt-1 text-sm text-white/55">Cuánto vendiste, tu ganancia y con qué margen. Sin esperar a fin de mes.</p>
+      </div>
+      <div class="rounded-2xl border border-line bg-card p-6">
+        <div class="rounded-xl bg-ink/60 p-4 text-xs space-y-2">
+          <div class="flex justify-between"><span class="text-white/50">Distribuidora Sur</span><span class="text-brand-400">Remito #1204</span></div>
+          <div class="flex justify-between"><span class="text-white/50">La Mercantil</span><span class="text-amber-400">Pendiente</span></div>
+        </div>
+        <h3 class="mt-5 font-semibold">Proveedores y remitos</h3>
+        <p class="mt-1 text-sm text-white/55">Cargá una entrada y queda todo: qué compraste, a quién y a qué costo.</p>
+      </div>
+      <div class="rounded-2xl border border-line bg-card p-6">
+        <div class="rounded-xl bg-ink/60 p-4 text-xs space-y-2">
+          <div class="flex justify-between"><span class="text-white/50">Pérez, Juan</span><span class="text-amber-400">Debe $3.200</span></div>
+          <div class="flex justify-between"><span class="text-white/50">Gómez, Ana</span><span class="text-brand-400">Al día</span></div>
+        </div>
+        <h3 class="mt-5 font-semibold">Clientes y fiado</h3>
+        <p class="mt-1 text-sm text-white/55">La cuenta corriente de cada cliente al día: quién te debe y cuánto, sin cuaderno.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CALCULADORA ===== -->
+  <section id="calculadora" class="border-y border-line bg-panel">
+    <div class="mx-auto max-w-6xl px-5 py-20">
+      <p class="text-xs text-brand-400 tracking-widest uppercase">Calculadora</p>
+      <h2 class="mt-3 text-3xl sm:text-4xl font-bold max-w-2xl leading-tight">¿Cuánto tiempo perdés controlando mercadería?</h2>
+
+      <div class="mt-10 grid md:grid-cols-2 gap-5">
+        <!-- inputs -->
+        <div class="rounded-2xl border border-line bg-card p-6 space-y-6">
+          <p class="text-xs text-white/40 uppercase tracking-wider">Tu situación hoy</p>
+
+          <div>
+            <div class="flex justify-between text-sm mb-2"><span class="text-white/70">Ventas por día</span><span id="v_ventas" class="font-semibold text-brand">60</span></div>
+            <input id="ventas" type="range" min="10" max="300" value="60" class="w-full">
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-2"><span class="text-white/70">Minutos por registro manual</span><span id="v_reg" class="font-semibold text-brand">2 min</span></div>
+            <input id="reg" type="range" min="0" max="10" step="0.5" value="2" class="w-full">
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-2"><span class="text-white/70">Horas de control de stock por semana</span><span id="v_stock" class="font-semibold text-brand">4 h</span></div>
+            <input id="stock" type="range" min="0" max="20" step="0.5" value="4" class="w-full">
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-2"><span class="text-white/70">Minutos de cierre de caja por día</span><span id="v_caja" class="font-semibold text-brand">15 min</span></div>
+            <input id="caja" type="range" min="0" max="60" step="5" value="15" class="w-full">
+          </div>
+        </div>
+
+        <!-- resultado -->
+        <div class="rounded-2xl border border-brand/30 bg-brand/5 p-6 flex flex-col">
+          <p class="text-xs text-brand-400 uppercase tracking-wider">Tiempo que recuperás</p>
+          <div class="mt-2">
+            <span id="horas" class="text-6xl font-extrabold text-brand">76</span>
+            <span class="text-2xl font-bold text-brand">h</span>
+          </div>
+          <p id="sub" class="text-sm text-white/60">por mes, aprox. 912 h al año que se van en control manual.</p>
+
+          <div class="mt-6 space-y-2 text-sm border-t border-brand/20 pt-4">
+            <div class="flex justify-between"><span class="text-white/60">Registro de ventas</span><span id="b_reg" class="text-brand-400">+0h</span></div>
+            <div class="flex justify-between"><span class="text-white/60">Control de stock</span><span id="b_stock" class="text-brand-400">+0h</span></div>
+            <div class="flex justify-between"><span class="text-white/60">Cierre de caja</span><span id="b_caja" class="text-brand-400">+0h</span></div>
+          </div>
+
+          <a href="#precios" class="mt-auto pt-6"><span class="block text-center bg-brand text-ink font-semibold rounded-xl py-3 hover:bg-brand-400 transition">Recuperar mi tiempo</span></a>
+        </div>
+      </div>
+      <p class="mt-4 text-xs text-white/30">* Estimación orientativa según los valores que cargues arriba.</p>
+    </div>
+  </section>
+
+  <!-- ===== PRECIOS ===== -->
+  <section id="precios" class="mx-auto max-w-6xl px-5 py-20">
+    <p class="text-xs text-brand-400 tracking-widest uppercase text-center">Precios</p>
+    <h2 class="mt-3 text-3xl sm:text-4xl font-bold text-center">Elegí el plan de tu negocio</h2>
+
+    <div class="mt-10 grid md:grid-cols-3 gap-5 items-start">
+      <!-- Esencial -->
+      <div class="rounded-2xl border border-line bg-card p-6">
+        <div class="flex items-center justify-between">
+          <h3 class="font-semibold">Esencial</h3>
+          <span class="text-[11px] rounded-full border border-line px-2 py-0.5 text-white/50">Arranque</span>
+        </div>
+        <div class="mt-4"><span class="text-3xl font-extrabold">$ —</span><span class="text-sm text-white/40"> /mes</span></div>
+        <ul class="mt-6 space-y-2.5 text-sm text-white/70">
+          <li class="flex gap-2"><span class="text-brand">✓</span> Punto de venta con lector de código</li>
+          <li class="flex gap-2"><span class="text-brand">✓</span> Stock y reposición</li>
+          <li class="flex gap-2"><span class="text-brand">✓</span> Hasta 500 productos</li>
+          <li class="flex gap-2"><span class="text-brand">✓</span> 1 usuario</li>
+          <li class="flex gap-2"><span class="text-brand">✓</span> Panel del día</li>
+        </ul>
+        <a href="#" data-msg="¡Hola! Me interesa el plan Esencial de MyPOS y quiero probarlo gratis." class="wa mt-6 block text-center border border-line rounded-xl py-2.5 text-sm hover:bg-ink transition">Probar 7 días gratis</a>
+      </div>
+
+      <!-- Pro (destacado) -->
+      <div class="rounded-2xl border border-brand bg-card p-6 relative shadow-lg shadow-brand/10">
+        <span class="absolute -top-3 left-1/2 -translate-x-1/2 text-[11px] bg-brand text-ink font-semibold rounded-full px-3 py-1">Más elegido</span>
+        <div class="flex items-center justify-between">
+          <h3 class="font-semibold">Pro</h3>
+        </div>
+        <div class="mt-4"><span class="text-3xl font-extrabold">$ —</span><span class="text-sm text-white/40"> /mes</span></div>
+        <ul class="mt-6 space-y-2.5 text-sm text-white/70">
+          <li class="flex gap-2"><span class="text-brand">✓</span> Todo lo del Esencial</li>
+          <li class="flex gap-2"><span class="text-brand">✓</span> Clientes y cuenta corriente (fiado)</li>
+          <li class="flex gap-2"><span class="text-brand">✓</span> Proveedores y remitos</li>
+          <li class="flex gap-2"><span class="text-brand">✓</span> Hasta 5 usuarios</li>
+          <li class="flex gap-2"><span class="text-white/40">◔</span> <span class="text-white/60">Facturación AFIP (próximamente)</span></li>
+        </ul>
+        <a href="#" data-msg="¡Hola! Me interesa el plan Pro de MyPOS y quiero probarlo gratis." class="wa mt-6 block text-center bg-brand text-ink font-semibold rounded-xl py-2.5 text-sm hover:bg-brand-400 transition">Probar 7 días gratis</a>
+      </div>
+
+      <!-- Negocio -->
+      <div class="rounded-2xl border border-line bg-card p-6">
+        <div class="flex items-center justify-between">
+          <h3 class="font-semibold">Negocio</h3>
+          <span class="text-[11px] rounded-full border border-line px-2 py-0.5 text-white/50">Escala</span>
+        </div>
+        <div class="mt-4"><span class="text-3xl font-extrabold">$ —</span><span class="text-sm text-white/40"> /mes</span></div>
+        <ul class="mt-6 space-y-2.5 text-sm text-white/70">
+          <li class="flex gap-2"><span class="text-brand">✓</span> Todo lo del Pro</li>
+          <li class="flex gap-2"><span class="text-brand">✓</span> Usuarios y permisos ilimitados</li>
+          <li class="flex gap-2"><span class="text-white/40">◔</span> <span class="text-white/60">Catálogo online (próximamente)</span></li>
+          <li class="flex gap-2"><span class="text-brand">✓</span> Migración y alta asistida</li>
+          <li class="flex gap-2"><span class="text-brand">✓</span> Soporte por chat</li>
+        </ul>
+        <a href="#" data-msg="¡Hola! Me interesa el plan Negocio de MyPOS y quiero probarlo gratis." class="wa mt-6 block text-center border border-line rounded-xl py-2.5 text-sm hover:bg-ink transition">Probar 7 días gratis</a>
+      </div>
+    </div>
+    <p class="mt-6 text-center text-xs text-white/30">* Precios y contenido de los planes a definir · 7 días gratis sin tarjeta.</p>
+  </section>
+
+  <!-- ===== CTA FINAL ===== -->
+  <section class="relative overflow-hidden border-t border-line bg-panel">
+    <div class="absolute inset-0 glow pointer-events-none"></div>
+    <div class="relative mx-auto max-w-3xl px-5 py-20 text-center">
+      <h2 class="text-3xl sm:text-5xl font-extrabold">Dejá de contar cajas a mano.</h2>
+      <p class="mt-4 text-white/60">Probalo 7 días gratis, sin tarjeta ni instalación. Si cuadra, seguimos; si no, tu lista de productos por vos.</p>
+      <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+        <a href="#precios" data-msg="¡Hola! Quiero empezar a usar MyPOS. ¿Me contás cómo es la prueba gratis?" class="wa w-full sm:w-auto bg-brand text-ink font-semibold rounded-xl px-6 py-3 hover:bg-brand-400 transition">Empezar gratis</a>
+        <a href="#producto" class="w-full sm:w-auto border border-line rounded-xl px-6 py-3 text-white/80 hover:bg-card transition">Conocer el producto</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="border-t border-line">
+    <div class="mx-auto max-w-6xl px-5 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/50">
+      <div class="flex items-center gap-2">
+        <span class="h-7 w-7 rounded-lg bg-brand grid place-items-center text-ink font-black text-sm">P</span>
+        <span class="font-bold text-white">MyPOS</span>
+      </div>
+      <nav class="flex gap-6">
+        <a href="#producto" class="hover:text-white transition">Producto</a>
+        <a href="#precios" class="hover:text-white transition">Precios</a>
+        <a href="#calculadora" class="hover:text-white transition">Calculadora</a>
+      </nav>
+      <span class="text-white/30">© 2026 MyPOS · Hecho en Argentina</span>
+    </div>
+  </footer>
+
+  <!-- ===== JS calculadora ===== -->
+  <script>
+    const els = {
+      ventas: document.getElementById('ventas'),
+      reg:    document.getElementById('reg'),
+      stock:  document.getElementById('stock'),
+      caja:   document.getElementById('caja'),
+    };
+    const out = {
+      v_ventas: document.getElementById('v_ventas'),
+      v_reg:    document.getElementById('v_reg'),
+      v_stock:  document.getElementById('v_stock'),
+      v_caja:   document.getElementById('v_caja'),
+      horas:    document.getElementById('horas'),
+      sub:      document.getElementById('sub'),
+      b_reg:    document.getElementById('b_reg'),
+      b_stock:  document.getElementById('b_stock'),
+      b_caja:   document.getElementById('b_caja'),
+    };
+
+    function round1(n){ return Math.round(n * 10) / 10; }
+
+    function calcular() {
+      const ventas = +els.ventas.value;   // ventas por día
+      const reg    = +els.reg.value;       // min por registro manual
+      const stock  = +els.stock.value;     // hs control stock por semana
+      const caja   = +els.caja.value;      // min cierre caja por día
+
+      // Etiquetas
+      out.v_ventas.textContent = ventas;
+      out.v_reg.textContent    = reg + ' min';
+      out.v_stock.textContent  = stock + ' h';
+      out.v_caja.textContent   = caja + ' min';
+
+      // Supuestos: 26 días de trabajo al mes, 4.33 semanas.
+      // MyPOS recupera ~90% del registro manual, ~70% del control de stock y ~80% del cierre de caja.
+      const hsRegMes   = (ventas * reg / 60) * 26 * 0.90;
+      const hsStockMes = (stock * 4.33) * 0.70;
+      const hsCajaMes  = (caja / 60) * 26 * 0.80;
+
+      const totalMes = hsRegMes + hsStockMes + hsCajaMes;
+
+      out.horas.textContent = round1(totalMes);
+      out.sub.textContent   = 'por mes, aprox. ' + Math.round(totalMes * 12) + ' h al año que se van en control manual.';
+      out.b_reg.textContent   = '+' + round1(hsRegMes) + 'h';
+      out.b_stock.textContent = '+' + round1(hsStockMes) + 'h';
+      out.b_caja.textContent  = '+' + round1(hsCajaMes) + 'h';
+    }
+
+    Object.values(els).forEach(el => el.addEventListener('input', calcular));
+    calcular();
+  </script>
+
+  <!-- ===== WhatsApp: engancha todos los botones .wa a tu número ===== -->
+  <script>
+    // ⬇️⬇️ PONÉ TU NÚMERO DE WHATSAPP ACÁ (formato internacional, sin +, sin 0 y sin 15) ⬇️⬇️
+    // Ej. Mendoza 261 123-4567  ->  '5492611234567'
+    const WHATSAPP = '5492613268888'; // Agustín
+    document.querySelectorAll('a.wa').forEach((a) => {
+      const msg = a.getAttribute('data-msg') || '¡Hola! Quiero probar MyPOS.';
+      a.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
+      a.target = '_blank';
+      a.rel = 'noreferrer';
+    });
+  </script>
+</body>
+</html>

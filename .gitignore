@@ -1,0 +1,4 @@
+# Nada que compilar: es un sitio estático (un solo index.html)
+.vercel
+.DS_Store
+*.log
