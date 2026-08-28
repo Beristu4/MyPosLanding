@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MyPOS — Sabé qué tenés, qué falta y qué reponer</title>
-  <meta name="description" content="MyPOS es el sistema de stock y punto de venta para tu negocio. Cargás una vez y sabés qué tenés, qué falta y cuánto vendés. Sin cuadernos, sin Excel, sin adivinar." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'><rect width='256' height='256' rx='56' fill='%232ee6a0'/><polygon points='128,64 192,100 128,136 64,100' fill='%23081210'/><polygon points='64,100 128,136 128,200 64,164' fill='%23081210' fill-opacity='0.72'/><polygon points='192,100 128,136 128,200 192,164' fill='%23081210' fill-opacity='0.48'/></svg>" />
+  <title>Stocker — Sabé qué tenés, qué falta y qué reponer</title>
+  <meta name="description" content="Stocker es el sistema de stock y punto de venta para tu negocio. Cargás una vez y sabés qué tenés, qué falta y cuánto vendés. Sin cuadernos, sin Excel, sin adivinar." />
 
   <!-- Tailwind (Play CDN: cero build, ideal para arrancar) -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -43,8 +44,8 @@
   <header class="sticky top-0 z-50 border-b border-line/70 bg-ink/80 backdrop-blur">
     <div class="mx-auto max-w-6xl px-5 h-16 flex items-center justify-between">
       <a href="#" class="flex items-center gap-2">
-        <span class="h-8 w-8 rounded-lg bg-brand grid place-items-center text-ink font-black">P</span>
-        <span class="font-bold text-lg">MyPOS</span>
+        <span class="h-8 w-8 rounded-lg bg-brand grid place-items-center"><svg viewBox="0 0 100 100" class="w-5 h-5" fill="#081210"><polygon points="50,14 82,32 50,50 18,32"/><polygon points="18,32 50,50 50,86 18,68" fill-opacity=".72"/><polygon points="82,32 50,50 50,86 82,68" fill-opacity=".48"/></svg></span>
+        <span class="font-bold text-lg">Stocker</span>
       </a>
       <nav class="hidden md:flex items-center gap-8 text-sm text-white/70">
         <a href="#producto" class="hover:text-white transition">Producto</a>
@@ -53,7 +54,7 @@
       </nav>
       <div class="flex items-center gap-3">
         <a href="https://my-pos-front-completo-nu.vercel.app/login" target="_blank" rel="noreferrer" class="hidden sm:inline text-sm text-white/70 hover:text-white transition">Iniciar sesión</a>
-        <a href="#precios" data-msg="¡Hola! Quiero probar MyPOS gratis 7 días 🙌" class="wa text-sm font-semibold bg-brand text-ink rounded-lg px-4 py-2 hover:bg-brand-400 transition">Probar gratis</a>
+        <a href="#precios" data-msg="¡Hola! Quiero probar Stocker gratis 7 días 🙌" class="wa text-sm font-semibold bg-brand text-ink rounded-lg px-4 py-2 hover:bg-brand-400 transition">Probar gratis</a>
       </div>
     </div>
   </header>
@@ -72,13 +73,13 @@
       </h1>
 
       <p class="mx-auto mt-5 max-w-xl text-white/60 text-base sm:text-lg">
-        MyPOS es el sistema de stock y punto de venta para tu negocio. Cargás una vez
+        Stocker es el sistema de stock y punto de venta para tu negocio. Cargás una vez
         y sabés qué mover, qué falta y cuánto vendés en cada entrada de proveedor.
         Sin cuadernos, sin Excel, sin adivinar.
       </p>
 
       <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
-        <a href="#precios" data-msg="¡Hola! Quiero probar MyPOS gratis 7 días 🙌" class="wa w-full sm:w-auto bg-brand text-ink font-semibold rounded-xl px-6 py-3 hover:bg-brand-400 transition">Probar gratis 7 días</a>
+        <a href="#precios" data-msg="¡Hola! Quiero probar Stocker gratis 7 días 🙌" class="wa w-full sm:w-auto bg-brand text-ink font-semibold rounded-xl px-6 py-3 hover:bg-brand-400 transition">Probar gratis 7 días</a>
         <a href="#producto" class="w-full sm:w-auto border border-line rounded-xl px-6 py-3 text-white/80 hover:bg-card transition">Ver cómo funciona</a>
       </div>
       <p class="mt-4 text-xs text-white/40">Sin tarjeta · Sin instalación · Configurado en un rato</p>
@@ -88,7 +89,7 @@
         <div class="rounded-xl border border-line bg-ink/60 overflow-hidden grid grid-cols-12 text-left">
           <!-- sidebar -->
           <aside class="hidden sm:flex col-span-3 flex-col gap-1 border-r border-line p-3 text-xs">
-            <div class="flex items-center gap-2 px-2 py-2 font-semibold"><span class="h-5 w-5 rounded bg-brand grid place-items-center text-ink text-[10px] font-black">P</span> MyPOS</div>
+            <div class="flex items-center gap-2 px-2 py-2 font-semibold"><span class="h-5 w-5 rounded bg-brand grid place-items-center"><svg viewBox="0 0 100 100" class="w-3.5 h-3.5" fill="#081210"><polygon points="50,14 82,32 50,50 18,32"/><polygon points="18,32 50,50 50,86 18,68" fill-opacity=".72"/><polygon points="82,32 50,50 50,86 82,68" fill-opacity=".48"/></svg></span> Stocker</div>
             <div class="mt-2 space-y-1 text-white/50">
               <div class="px-2 py-1.5 rounded">Panel del día</div>
               <div class="px-2 py-1.5 rounded">Punto de venta</div>
@@ -271,7 +272,7 @@
           <li class="flex gap-2"><span class="text-brand">✓</span> 1 usuario</li>
           <li class="flex gap-2"><span class="text-brand">✓</span> Panel del día</li>
         </ul>
-        <a href="#" data-msg="¡Hola! Me interesa el plan Esencial de MyPOS y quiero probarlo gratis." class="wa mt-6 block text-center border border-line rounded-xl py-2.5 text-sm hover:bg-ink transition">Probar 7 días gratis</a>
+        <a href="#" data-msg="¡Hola! Me interesa el plan Esencial de Stocker y quiero probarlo gratis." class="wa mt-6 block text-center border border-line rounded-xl py-2.5 text-sm hover:bg-ink transition">Probar 7 días gratis</a>
       </div>
 
       <!-- Pro (destacado) -->
@@ -288,7 +289,7 @@
           <li class="flex gap-2"><span class="text-brand">✓</span> Hasta 5 usuarios</li>
           <li class="flex gap-2"><span class="text-white/40">◔</span> <span class="text-white/60">Facturación AFIP (próximamente)</span></li>
         </ul>
-        <a href="#" data-msg="¡Hola! Me interesa el plan Pro de MyPOS. ¿Me avisás cuando esté disponible?" class="wa mt-6 block text-center bg-brand text-ink font-semibold rounded-xl py-2.5 text-sm hover:bg-brand-400 transition">Avisame cuando esté</a>
+        <a href="#" data-msg="¡Hola! Me interesa el plan Pro de Stocker. ¿Me avisás cuando esté disponible?" class="wa mt-6 block text-center bg-brand text-ink font-semibold rounded-xl py-2.5 text-sm hover:bg-brand-400 transition">Avisame cuando esté</a>
       </div>
 
       <!-- Negocio -->
@@ -305,7 +306,7 @@
           <li class="flex gap-2"><span class="text-brand">✓</span> Migración y alta asistida</li>
           <li class="flex gap-2"><span class="text-brand">✓</span> Soporte por chat</li>
         </ul>
-        <a href="#" data-msg="¡Hola! Me interesa el plan Negocio de MyPOS. ¿Me avisás cuando esté disponible?" class="wa mt-6 block text-center border border-line rounded-xl py-2.5 text-sm hover:bg-ink transition">Avisame cuando esté</a>
+        <a href="#" data-msg="¡Hola! Me interesa el plan Negocio de Stocker. ¿Me avisás cuando esté disponible?" class="wa mt-6 block text-center border border-line rounded-xl py-2.5 text-sm hover:bg-ink transition">Avisame cuando esté</a>
       </div>
     </div>
     <p class="mt-6 text-center text-xs text-white/30">Plan Esencial ya disponible · Pro y Negocio próximamente · 7 días gratis sin tarjeta.</p>
@@ -318,7 +319,7 @@
       <h2 class="text-3xl sm:text-5xl font-extrabold">Dejá de contar cajas a mano.</h2>
       <p class="mt-4 text-white/60">Probalo 7 días gratis, sin tarjeta ni instalación. Si cuadra, seguimos; si no, tu lista de productos por vos.</p>
       <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
-        <a href="#precios" data-msg="¡Hola! Quiero empezar a usar MyPOS. ¿Me contás cómo es la prueba gratis?" class="wa w-full sm:w-auto bg-brand text-ink font-semibold rounded-xl px-6 py-3 hover:bg-brand-400 transition">Empezar gratis</a>
+        <a href="#precios" data-msg="¡Hola! Quiero empezar a usar Stocker. ¿Me contás cómo es la prueba gratis?" class="wa w-full sm:w-auto bg-brand text-ink font-semibold rounded-xl px-6 py-3 hover:bg-brand-400 transition">Empezar gratis</a>
         <a href="#producto" class="w-full sm:w-auto border border-line rounded-xl px-6 py-3 text-white/80 hover:bg-card transition">Conocer el producto</a>
       </div>
     </div>
@@ -328,15 +329,15 @@
   <footer class="border-t border-line">
     <div class="mx-auto max-w-6xl px-5 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/50">
       <div class="flex items-center gap-2">
-        <span class="h-7 w-7 rounded-lg bg-brand grid place-items-center text-ink font-black text-sm">P</span>
-        <span class="font-bold text-white">MyPOS</span>
+        <span class="h-7 w-7 rounded-lg bg-brand grid place-items-center"><svg viewBox="0 0 100 100" class="w-4 h-4" fill="#081210"><polygon points="50,14 82,32 50,50 18,32"/><polygon points="18,32 50,50 50,86 18,68" fill-opacity=".72"/><polygon points="82,32 50,50 50,86 82,68" fill-opacity=".48"/></svg></span>
+        <span class="font-bold text-white">Stocker</span>
       </div>
       <nav class="flex gap-6">
         <a href="#producto" class="hover:text-white transition">Producto</a>
         <a href="#precios" class="hover:text-white transition">Precios</a>
         <a href="#calculadora" class="hover:text-white transition">Calculadora</a>
       </nav>
-      <span class="text-white/30">© 2026 MyPOS · Hecho en Argentina</span>
+      <span class="text-white/30">© 2026 Stocker · Hecho en Argentina</span>
     </div>
   </footer>
 
@@ -375,7 +376,7 @@
       out.v_caja.textContent   = caja + ' min';
 
       // Supuestos: 26 días de trabajo al mes, 4.33 semanas.
-      // MyPOS recupera ~90% del registro manual, ~70% del control de stock y ~80% del cierre de caja.
+      // Stocker recupera ~90% del registro manual, ~70% del control de stock y ~80% del cierre de caja.
       const hsRegMes   = (ventas * reg / 60) * 26 * 0.90;
       const hsStockMes = (stock * 4.33) * 0.70;
       const hsCajaMes  = (caja / 60) * 26 * 0.80;
@@ -399,7 +400,7 @@
     // Ej. Mendoza 261 123-4567  ->  '5492611234567'
     const WHATSAPP = '5492613268888'; // Agustín
     document.querySelectorAll('a.wa').forEach((a) => {
-      const msg = a.getAttribute('data-msg') || '¡Hola! Quiero probar MyPOS.';
+      const msg = a.getAttribute('data-msg') || '¡Hola! Quiero probar Stocker.';
       a.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
       a.target = '_blank';
       a.rel = 'noreferrer';
